@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import Protein from "./Items/Protein"
-function count() {
+function Count() {
 
     const [count, setCount] = useState(0)
     const [numberOfItem, setNumberOfItem] = useState(0)
@@ -51,4 +51,4 @@ function count() {
     </div>
   )
 }
-export default count
+export default Count

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProteinImg from "../images/Protein.webp"
-import count from "../count";
+import count from "../Count";
 
 function Protein(props) {
   const {numberOfItem, price, name, onBuy} = props
