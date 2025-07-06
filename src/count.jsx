@@ -37,17 +37,26 @@ function Count() {
     
 
   return (
-    <div>
-        <h1>CicCount: {displayCount}</h1>
+    <div className="grid grid-cols-2 h-full">
+      <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600">
+        <h1 className="text-4xl text-white mb-6 font-bold">CicCount: {displayCount}</h1>
         <button onClick={handleClick}><img src={ciciman} alt="" /></button>
+      </div>
 
-        <Protein
+
+      <div>
+        <Protein class
         name = "Protein"
         price = {displayProteinPrice}
         numberOfItem = {numberOfItem}
         onBuy = {addProtein}
 
         ></Protein>
+      </div>
+      
+        
+
+        
     </div>
   )
 }
