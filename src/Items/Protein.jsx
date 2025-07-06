@@ -1,6 +1,5 @@
-import { useState } from "react";
 import ProteinImg from "../images/Protein.webp"
-import count from "../Count";
+
 
 function Protein(props) {
   const {numberOfItem, price, name, onBuy} = props
@@ -10,10 +9,12 @@ function Protein(props) {
     onBuy();
   }
 
+  
+
   return (
     <div>
       <button onClick={handleClick}>Buy {name} for {price}</button>
-      <img src={ProteinImg} alt="" width={100} height={100}/>
+      <img src={ProteinImg} className="w-30 h-30"/>
       <h2>{numberOfItem}</h2>
     </div>
   )
