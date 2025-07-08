@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
-import Protein from "./Items/Protein"
-import Employee from "./Items/Employee"
 import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
+import Items from "./Items"
+
 function Count() {
 
     const [count, setCount] = useState(10000)
@@ -13,14 +13,20 @@ function Count() {
     const [isProteinUpgradeActive, setIsProteinUpgradeActive] = useState(false)
     const [PROTEIN_RATE, setPROTEIN_RATE] = useState(0.2)
     const [EMPLOYEE_RATE, setEMPLOYEE_RATE] = useState(1)
+    const [MACHINE_RATE, setMACHIEN_RATE] = useState(10)
     const [proteinUpgradePrice, setProteinUpgradePrice] = useState(50)
+    const [numberOfMachineItem, setNumberOfMachineItem] = useState(0)
+    const [MachinePrice, setMachinePrice] = useState(1000)
+    
 
-    const totalCPS = (numberOfProteinItem*PROTEIN_RATE) + (NumberOfEmployeeItem*EMPLOYEE_RATE)
+    const totalCPS = (numberOfProteinItem*PROTEIN_RATE) + (NumberOfEmployeeItem*EMPLOYEE_RATE) + (numberOfMachineItem*MACHINE_RATE)
 
     const displayCount = count.toFixed(1)
     const displayProteinPrice = ProteinPrice.toFixed(1)
     const displayEmployeePrice = EmployeePrice.toFixed(1)
+    const displayMachinePrice = MachinePrice.toFixed(1)
     const displayCPS = totalCPS.toFixed(1)
+    
 
     function handleClick() {
         setCount(prev => prev+1)
@@ -44,59 +50,59 @@ function Count() {
       }
     }
 
+    function addMachine() {
+      if(count >= MachinePrice) {
+        setCount(prev => prev-MachinePrice)
+        setNumberOfMachineItem(prev => prev+1)
+        setMachinePrice(prevPrice => prevPrice*1.15)
+      }
+    }
+
      function handleProteinUpgrade() {
       if(count >= proteinUpgradePrice){
         setCount(prev => prev-proteinUpgradePrice)
         setPROTEIN_RATE(prev => prev*2)
-        setProteinUpgradePrice(prev => prev*10)
+        setProteinUpgradePrice(prev => prev*5)
         setIsProteinUpgradeActive(true)
 
       }
 
    }
 
-   
-
     useEffect(() => {
       let passiveProtein = numberOfProteinItem*PROTEIN_RATE
       let passiveEmployee = NumberOfEmployeeItem*EMPLOYEE_RATE
+      let passiveMachine = numberOfMachineItem*MACHINE_RATE
 
       const intervalID = setInterval(() => {
-         setCount(prev => prev + passiveProtein + passiveEmployee)
+         setCount(prev => prev + passiveProtein + passiveEmployee + passiveMachine)
       }, 1000)
      
       return () => clearInterval(intervalID)
-    }, [numberOfProteinItem, NumberOfEmployeeItem, PROTEIN_RATE, EMPLOYEE_RATE])
-
-
-   
-   
+    }, [numberOfProteinItem, NumberOfEmployeeItem, numberOfMachineItem, PROTEIN_RATE, EMPLOYEE_RATE, MACHINE_RATE])
 
   return (
     <div className="grid grid-cols-9 h-full">
       <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
         <h1 className="text-4xl text-white font-bold">CicCount: {displayCount}</h1>
         <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {displayCPS}</h2>
-        <button onClick={handleClick}><img src={ciciman} alt="" /></button>
+        <button onClick={handleClick} className="cursor-pointer"><img src={ciciman} alt="" /></button>
       </div>
 
 
       <div className="col-span-4">
        
-        <Protein 
-        name = "Protein"
-        price = {displayProteinPrice}
-        numberOfItem = {numberOfProteinItem}
-        onBuy = {addProtein}
-
-        ></Protein>
-
-         {(count >= 100 || NumberOfEmployeeItem >=1) && (<Employee
-        name = "Employee"
-        price = {displayEmployeePrice}
-        numberOfItem = {NumberOfEmployeeItem}
-        onBuy = {addEmployee}
-        ></Employee>)}
+        <Items
+            displayEmployeePrice={displayEmployeePrice}
+            displayProteinPrice={displayProteinPrice}
+            displayMachinePrice={displayMachinePrice}
+            NumberOfEmployeeItem={NumberOfEmployeeItem}
+            numberOfProteinItem={numberOfProteinItem}
+            numberOfMachineItem={numberOfMachineItem}
+            addEmployee={addEmployee}
+            addProtein={addProtein}
+            addMachine={addMachine}
+          />
       </div>
       
 
@@ -105,7 +111,6 @@ function Count() {
         price = {proteinUpgradePrice}
         onBuy = {handleProteinUpgrade}
         ></ProteinUpgrade>
-      
       </div>
         
 

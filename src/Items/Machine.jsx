@@ -1,7 +1,8 @@
-import ProteinImg from "../images/Protein.webp"
 import React from 'react'
+import MachineImg from "../images/Machine.jpg"
 
-function Protein(props) {
+
+function Machine(props) {
   const { numberOfItem, price, name, onBuy } = props;
 
   function handleClick() {
@@ -11,7 +12,7 @@ function Protein(props) {
   return (
     <div>
       <button onClick={handleClick}>Buy {name} ({price})
-        <img src={ProteinImg} alt={name} className="w-40 h-40"/>
+        <img src={MachineImg} alt={name} className='w-40 h-40'/>
       <h2>Owned: {numberOfItem}</h2>
       </button>
       
@@ -19,4 +20,4 @@ function Protein(props) {
   );
 }
 
-export default Protein
+export default Machine
