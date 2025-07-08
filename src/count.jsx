@@ -4,7 +4,7 @@ import Protein from "./Items/Protein"
 import Employee from "./Items/Employee"
 function Count() {
 
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(20)
     const [numberOfProteinItem, setNumberOfProteinItem] = useState(0)
     const [ProteinPrice, setProteinPrice] = useState(10)
     const [NumberOfEmployeeItem, setNumberOfEmployeeItem] = useState(0)
@@ -34,18 +34,7 @@ function Count() {
       
     }
 
-    useEffect(() => {
-      let passiveProtein = numberOfProteinItem * 0.1
-
-      const intervalID = setInterval(() => {
-         setCount(prev => prev + passiveProtein)
-      }, 1000)
-     
-      return () => clearInterval(intervalID)
-    }, [numberOfProteinItem])
-
-
-    function addEmployee() {
+     function addEmployee() {
       if(count >= EmployeePrice) {
         setCount(prev => prev - EmployeePrice)
         setNumberOfEmployeeItem(prev => prev+1)
@@ -53,15 +42,19 @@ function Count() {
       }
     }
 
+   
+
     useEffect(() => {
+      let passiveProtein = numberOfProteinItem * 0.1
       let passiveEmployee = NumberOfEmployeeItem*1
 
       const intervalID = setInterval(() => {
-        setCount(prev => prev+passiveEmployee)
+         setCount(prev => prev + passiveProtein + passiveEmployee)
       }, 1000)
-
+     
       return () => clearInterval(intervalID)
-    }, [NumberOfEmployeeItem])
+    }, [numberOfProteinItem, NumberOfEmployeeItem])
+
 
    
 
@@ -75,6 +68,7 @@ function Count() {
 
 
       <div>
+       
         <Protein 
         name = "Protein"
         price = {displayProteinPrice}
@@ -83,12 +77,12 @@ function Count() {
 
         ></Protein>
 
-        <Employee
+         {(count >= 100 || NumberOfEmployeeItem >=1) && (<Employee
         name = "Employee"
         price = {displayEmployeePrice}
         numberOfItem = {NumberOfEmployeeItem}
         onBuy = {addEmployee}
-        ></Employee>
+        ></Employee>)}
       </div>
       
         
