@@ -2,16 +2,18 @@ import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import Protein from "./Items/Protein"
 import Employee from "./Items/Employee"
+import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
 function Count() {
 
-    const [count, setCount] = useState(20)
+    const [count, setCount] = useState(10000)
     const [numberOfProteinItem, setNumberOfProteinItem] = useState(0)
     const [ProteinPrice, setProteinPrice] = useState(10)
     const [NumberOfEmployeeItem, setNumberOfEmployeeItem] = useState(0)
     const [EmployeePrice, setEmployeePrice] = useState(100)
-
-    const PROTEIN_RATE = 0.1;
-    const EMPLOYEE_RATE = 1;
+    const [isProteinUpgradeActive, setIsProteinUpgradeActive] = useState(false)
+    const [PROTEIN_RATE, setPROTEIN_RATE] = useState(0.2)
+    const [EMPLOYEE_RATE, setEMPLOYEE_RATE] = useState(1)
+    const [proteinUpgradePrice, setProteinUpgradePrice] = useState(50)
 
     const totalCPS = (numberOfProteinItem*PROTEIN_RATE) + (NumberOfEmployeeItem*EMPLOYEE_RATE)
 
@@ -42,32 +44,44 @@ function Count() {
       }
     }
 
+     function handleProteinUpgrade() {
+      if(count >= proteinUpgradePrice){
+        setCount(prev => prev-proteinUpgradePrice)
+        setPROTEIN_RATE(prev => prev*2)
+        setProteinUpgradePrice(prev => prev*10)
+        setIsProteinUpgradeActive(true)
+
+      }
+
+   }
+
    
 
     useEffect(() => {
-      let passiveProtein = numberOfProteinItem * 0.1
-      let passiveEmployee = NumberOfEmployeeItem*1
+      let passiveProtein = numberOfProteinItem*PROTEIN_RATE
+      let passiveEmployee = NumberOfEmployeeItem*EMPLOYEE_RATE
 
       const intervalID = setInterval(() => {
          setCount(prev => prev + passiveProtein + passiveEmployee)
       }, 1000)
      
       return () => clearInterval(intervalID)
-    }, [numberOfProteinItem, NumberOfEmployeeItem])
+    }, [numberOfProteinItem, NumberOfEmployeeItem, PROTEIN_RATE, EMPLOYEE_RATE])
 
 
    
+   
 
   return (
-    <div className="grid grid-cols-2 h-full">
-      <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600">
+    <div className="grid grid-cols-9 h-full">
+      <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
         <h1 className="text-4xl text-white font-bold">CicCount: {displayCount}</h1>
         <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {displayCPS}</h2>
         <button onClick={handleClick}><img src={ciciman} alt="" /></button>
       </div>
 
 
-      <div>
+      <div className="col-span-4">
        
         <Protein 
         name = "Protein"
@@ -85,6 +99,14 @@ function Count() {
         ></Employee>)}
       </div>
       
+
+      <div>
+        <ProteinUpgrade
+        price = {proteinUpgradePrice}
+        onBuy = {handleProteinUpgrade}
+        ></ProteinUpgrade>
+      
+      </div>
         
 
         
