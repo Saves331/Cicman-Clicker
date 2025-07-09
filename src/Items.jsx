@@ -4,50 +4,44 @@ import Protein from './Items/Protein'
 import Machine from './Items/Machine'
 function Items(props) {
 
-    const {
-         displayEmployeePrice, 
-         displayProteinPrice, 
-         displayMachinePrice, 
-         NumberOfEmployeeItem, 
-         numberOfProteinItem,
-         numberOfMachineItem, 
-         addEmployee, 
-         addProtein, 
-         addMachine} = props;
+   const {
+        items,
+        onBuy
+        } = props;
 
-    const items = [
+    const itemList = [
         {
             id: 1,
+            key: "protein",
             name: "Protein",
-            price:displayProteinPrice,
-            numberOfItem: numberOfProteinItem,
-            onBuy: addProtein,
+            price: items.protein.price.toFixed(1),
+            numberOfItem: items.protein.count,
             Component: Protein
         
         },
           
         {
             id: 2,
+            key: "employee",
             name: "Employee",
-            price:displayEmployeePrice,
-            numberOfItem:NumberOfEmployeeItem,
-            onBuy: addEmployee,
+            price: items.employee.price.toFixed(1),
+            numberOfItem: items.employee.count,
             Component: Employee,
             
         },
 
         {
             id: 3,
+            key: "machine",
             name:"Machine",
-            price:displayMachinePrice,
-            numberOfItem:numberOfMachineItem,
-            onBuy:addMachine,
+            price:items.machine.price.toFixed(1),
+            numberOfItem: items.machine.count,
             Component: Machine
         }
     ]
   return (
     <div className='grid grid-cols-3'>
-        {items.map((item) => {
+        {itemList.map((item) => {
             const Component = item.Component;
             return (
                 <Component
@@ -55,7 +49,7 @@ function Items(props) {
                 name = {item.name}
                 price = {item.price}
                 numberOfItem = {item.numberOfItem}
-                onBuy = {item.onBuy}
+                onBuy = {() => onBuy(item.key)}
                 ></Component>
             )
         })}

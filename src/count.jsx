@@ -2,29 +2,31 @@ import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
 import Items from "./Items"
+import Employee from "./Items/Employee"
 
 function Count() {
 
     const [count, setCount] = useState(10000)
-    const [numberOfProteinItem, setNumberOfProteinItem] = useState(0)
-    const [ProteinPrice, setProteinPrice] = useState(10)
-    const [NumberOfEmployeeItem, setNumberOfEmployeeItem] = useState(0)
-    const [EmployeePrice, setEmployeePrice] = useState(100)
-    const [isProteinUpgradeActive, setIsProteinUpgradeActive] = useState(false)
+    
     const [PROTEIN_RATE, setPROTEIN_RATE] = useState(0.2)
     const [EMPLOYEE_RATE, setEMPLOYEE_RATE] = useState(1)
     const [MACHINE_RATE, setMACHIEN_RATE] = useState(10)
-    const [proteinUpgradePrice, setProteinUpgradePrice] = useState(50)
-    const [numberOfMachineItem, setNumberOfMachineItem] = useState(0)
-    const [MachinePrice, setMachinePrice] = useState(1000)
-    
 
-    const totalCPS = (numberOfProteinItem*PROTEIN_RATE) + (NumberOfEmployeeItem*EMPLOYEE_RATE) + (numberOfMachineItem*MACHINE_RATE)
+    const [proteinUpgradePrice, setProteinUpgradePrice] = useState(50)
+    const [isProteinUpgradeActive, setIsProteinUpgradeActive] = useState(false)
+    
+    const [items, setItems] = useState({
+      protein: { count: 0, price: 10},
+      employee: { count: 0, price: 100},
+      machine: { count: 0, price: 1000}
+    })
+
+    const totalCPS = (items.protein.count*PROTEIN_RATE) + (items.employee.count*EMPLOYEE_RATE) + (items.machine.count*MACHINE_RATE)
 
     const displayCount = count.toFixed(1)
-    const displayProteinPrice = ProteinPrice.toFixed(1)
-    const displayEmployeePrice = EmployeePrice.toFixed(1)
-    const displayMachinePrice = MachinePrice.toFixed(1)
+    const displayProteinPrice = items.protein.price.toFixed(1)
+    const displayEmployeePrice = items.employee.price.toFixed(1)
+    const displayMachinePrice = items.machine.price.toFixed(1)
     const displayCPS = totalCPS.toFixed(1)
     
 
@@ -32,30 +34,18 @@ function Count() {
         setCount(prev => prev+1)
     }
 
-    function addProtein() {
-     
-      if(count >= ProteinPrice) {
-        setCount(prev => prev - ProteinPrice);
-        setNumberOfProteinItem(prev => prev+1)
-        setProteinPrice(prevPrice => prevPrice*1.15)
+    function addItem(itemName) {
+     const item = items[itemName]
+      if(count >= item.price) {
+        setCount(prev => prev - item.price);
+        setItems(prevItems => ({...prevItems,
+          [itemName]: {
+            count: prevItems[itemName].count + 1,
+            price: prevItems[itemName].price *1.15
+          }
+        }))
       }
       
-    }
-
-     function addEmployee() {
-      if(count >= EmployeePrice) {
-        setCount(prev => prev - EmployeePrice)
-        setNumberOfEmployeeItem(prev => prev+1)
-        setEmployeePrice(prevPrice => prevPrice*1.15)
-      }
-    }
-
-    function addMachine() {
-      if(count >= MachinePrice) {
-        setCount(prev => prev-MachinePrice)
-        setNumberOfMachineItem(prev => prev+1)
-        setMachinePrice(prevPrice => prevPrice*1.15)
-      }
     }
 
      function handleProteinUpgrade() {
@@ -70,16 +60,16 @@ function Count() {
    }
 
     useEffect(() => {
-      let passiveProtein = numberOfProteinItem*PROTEIN_RATE
-      let passiveEmployee = NumberOfEmployeeItem*EMPLOYEE_RATE
-      let passiveMachine = numberOfMachineItem*MACHINE_RATE
+      let passiveProtein = items.protein.count*PROTEIN_RATE
+      let passiveEmployee = items.employee.count*EMPLOYEE_RATE
+      let passiveMachine = items.machine.count*MACHINE_RATE
 
       const intervalID = setInterval(() => {
          setCount(prev => prev + passiveProtein + passiveEmployee + passiveMachine)
       }, 1000)
      
       return () => clearInterval(intervalID)
-    }, [numberOfProteinItem, NumberOfEmployeeItem, numberOfMachineItem, PROTEIN_RATE, EMPLOYEE_RATE, MACHINE_RATE])
+    }, [items, PROTEIN_RATE, EMPLOYEE_RATE, MACHINE_RATE])
 
   return (
     <div className="grid grid-cols-9 h-full">
@@ -96,12 +86,8 @@ function Count() {
             displayEmployeePrice={displayEmployeePrice}
             displayProteinPrice={displayProteinPrice}
             displayMachinePrice={displayMachinePrice}
-            NumberOfEmployeeItem={NumberOfEmployeeItem}
-            numberOfProteinItem={numberOfProteinItem}
-            numberOfMachineItem={numberOfMachineItem}
-            addEmployee={addEmployee}
-            addProtein={addProtein}
-            addMachine={addMachine}
+            items = {items}
+            onBuy = {addItem}
           />
       </div>
       
