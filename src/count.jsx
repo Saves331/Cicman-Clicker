@@ -1,19 +1,11 @@
 import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
-import Items from "./Items"
-import Employee from "./Items/Employee"
+import { getItemList, getUpgradeList } from "./Data"
 
 function Count() {
 
-    const [count, setCount] = useState(10000)
-    
-    const [PROTEIN_RATE, setPROTEIN_RATE] = useState(0.2)
-    const [EMPLOYEE_RATE, setEMPLOYEE_RATE] = useState(1)
-    const [MACHINE_RATE, setMACHIEN_RATE] = useState(10)
-
-    const [proteinUpgradePrice, setProteinUpgradePrice] = useState(50)
-    const [isProteinUpgradeActive, setIsProteinUpgradeActive] = useState(false)
+    const [count, setCount] = useState(1000000)
     
     const [items, setItems] = useState({
       protein: { count: 0, price: 10},
@@ -21,12 +13,14 @@ function Count() {
       machine: { count: 0, price: 1000}
     })
 
-    const totalCPS = (items.protein.count*PROTEIN_RATE) + (items.employee.count*EMPLOYEE_RATE) + (items.machine.count*MACHINE_RATE)
+    const [upgrades, setUpragades] = useState({
+      proteinUpgrade: { count: 0, price: 100, RATE: 0.2},
+      employeeUpgrade: { count: 0, price: 1000, RATE: 1},
+      machineUpgrade: { count: 0, price: 10000, RATE: 10}
+    })
 
+    const totalCPS = (items.protein.count*upgrades.proteinUpgrade.RATE) + (items.employee.count*upgrades.employeeUpgrade.RATE) + (items.machine.count*upgrades.machineUpgrade.RATE)
     const displayCount = count.toFixed(1)
-    const displayProteinPrice = items.protein.price.toFixed(1)
-    const displayEmployeePrice = items.employee.price.toFixed(1)
-    const displayMachinePrice = items.machine.price.toFixed(1)
     const displayCPS = totalCPS.toFixed(1)
     
 
@@ -48,28 +42,37 @@ function Count() {
       
     }
 
-     function handleProteinUpgrade() {
-      if(count >= proteinUpgradePrice){
-        setCount(prev => prev-proteinUpgradePrice)
-        setPROTEIN_RATE(prev => prev*2)
-        setProteinUpgradePrice(prev => prev*5)
-        setIsProteinUpgradeActive(true)
+     function handleUpgrade(upgradeName) {
+      const upgrade = upgrades[upgradeName]
+      if(count >= upgrade.price){
+        setCount(prev => prev-upgrade.price)
+        setUpragades(prevUpgrades => ({...prevUpgrades, 
+          [upgradeName]: {
+            count: prevUpgrades[upgradeName].count + 1,
+            price: prevUpgrades[upgradeName].price * 5,
+            RATE: prevUpgrades[upgradeName].RATE * 2
+          }
+        }))
 
       }
 
    }
 
     useEffect(() => {
-      let passiveProtein = items.protein.count*PROTEIN_RATE
-      let passiveEmployee = items.employee.count*EMPLOYEE_RATE
-      let passiveMachine = items.machine.count*MACHINE_RATE
+      
 
       const intervalID = setInterval(() => {
-         setCount(prev => prev + passiveProtein + passiveEmployee + passiveMachine)
+        const totalPassive = Object.keys(items).reduce((total, itemName) => {
+          const itemCount = items[itemName].count
+          const upgradeName = itemName + "Upgrade"
+          const rate = upgrades[upgradeName]?.RATE || 0;
+          return total + itemCount * rate
+        }, 0)
+         setCount(prev => prev + totalPassive)
       }, 1000)
      
       return () => clearInterval(intervalID)
-    }, [items, PROTEIN_RATE, EMPLOYEE_RATE, MACHINE_RATE])
+    }, [items, upgrades])
 
   return (
     <div className="grid grid-cols-9 h-full">
@@ -81,22 +84,28 @@ function Count() {
 
 
       <div className="col-span-4">
-       
-        <Items
-            displayEmployeePrice={displayEmployeePrice}
-            displayProteinPrice={displayProteinPrice}
-            displayMachinePrice={displayMachinePrice}
-            items = {items}
-            onBuy = {addItem}
-          />
-      </div>
+      {getItemList(items).map((item) => (
+    <div key={item.id} className="p-4">
+      <button onClick={() => addItem(item.key)} className="flex flex-col items-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition">
+        <h2 className="text-xl font-bold">{item.name}</h2>
+        <p className="mb-2">Price: {item.price}</p>
+        <img src={item.img} alt={item.name} className="w-40 h-40 object-cover mb-2" />
+        <p>Owned: {item.numberOfItem}</p>
+      </button>
+    </div>
+  ))}
+</div>
       
 
       <div>
-        <ProteinUpgrade
-        price = {proteinUpgradePrice}
-        onBuy = {handleProteinUpgrade}
-        ></ProteinUpgrade>
+       {getUpgradeList(upgrades).map((upgrade) => (
+        <div key={upgrade.id} className='bg-amber-100 border-2'>
+             <button onClick={() => handleUpgrade(upgrade.key)} className='flex items-center cursor-pointer'>
+                <img src={upgrade.img} alt={upgrade.name} className='w-15'/>
+                <h2 className='text-center'>Buy Upgrade 2x for {upgrade.displayName} ({upgrade.price}Cic)</h2>
+             </button>
+        </div>
+       ))}
       </div>
         
 
