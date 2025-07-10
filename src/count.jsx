@@ -5,23 +5,45 @@ import { getItemList, getUpgradeList } from "./Data"
 
 function Count() {
 
-    const [count, setCount] = useState(1000000)
+    const [count, setCount] = useState(100000000)
     
     const [items, setItems] = useState({
       protein: { count: 0, price: 10},
       employee: { count: 0, price: 100},
-      machine: { count: 0, price: 1000}
+      machine: { count: 0, price: 1000},
+      supplementStack: { count: 0, price: 12000},
+      opel: { count: 0, price: 45000},
+      predajna: { count: 0, price: 100000},
+      sklad: {count: 0, price: 5000000},
+      mercedes: { count: 0, price: 34000000},
+      robot: { count: 0, price: 100000000}
     })
 
     const [upgrades, setUpragades] = useState({
       proteinUpgrade: { count: 0, price: 100, RATE: 0.2},
       employeeUpgrade: { count: 0, price: 1000, RATE: 1},
-      machineUpgrade: { count: 0, price: 10000, RATE: 10}
+      machineUpgrade: { count: 0, price: 10000, RATE: 10},
+      supplementStackUpgrade: {count: 0, price: 120000, RATE: 105},
+      opelUpgrade: {count: 0, price: 450000, RATE: 8400},
+      predajnaUpgrade: { count:0, price: 1000000, RATE: 18950},
+      skladUpgrade: { count: 0, price: 50000000, RATE: 40000},
+      mercedesUpgrade: { count: 0, price: 100000000, RATE: 160000},
+      robotUpgrade: { count:0, price: 200000000, RATE: 820000}
     })
 
-    const totalCPS = (items.protein.count*upgrades.proteinUpgrade.RATE) + (items.employee.count*upgrades.employeeUpgrade.RATE) + (items.machine.count*upgrades.machineUpgrade.RATE)
+    function showTotalCps() {
+      const totalCPS = Object.keys(items).reduce((total, itemName) => {
+        const itemCount = items[itemName].count
+        const upgradeName = itemName+"Upgrade"
+        const rate = upgrades[upgradeName]?.RATE || 0 
+        return total + itemCount*rate
+      }, 0)
+
+      return totalCPS.toFixed(1)
+    }
+
     const displayCount = count.toFixed(1)
-    const displayCPS = totalCPS.toFixed(1)
+    
     
 
     function handleClick() {
@@ -78,15 +100,15 @@ function Count() {
     <div className="grid grid-cols-9 h-full">
       <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
         <h1 className="text-4xl text-white font-bold">CicCount: {displayCount}</h1>
-        <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {displayCPS}</h2>
-        <button onClick={handleClick} className="cursor-pointer"><img src={ciciman} alt="" /></button>
+        <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {showTotalCps()}</h2>
+        <button onClick={handleClick} className="cursor-pointer"><img src={ciciman} alt="" className="h-120"/></button>
       </div>
 
 
-      <div className="col-span-4">
+      <div className="col-span-4 grid grid-cols-3 grid-rows-3">
       {getItemList(items).map((item) => (
-    <div key={item.id} className="p-4">
-      <button onClick={() => addItem(item.key)} className="flex flex-col items-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition">
+    <div key={item.id} className="p-4 bg-blue-600 border-4 m-0">
+      <button onClick={() => addItem(item.key)} className="flex flex-col items-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full">
         <h2 className="text-xl font-bold">{item.name}</h2>
         <p className="mb-2">Price: {item.price}</p>
         <img src={item.img} alt={item.name} className="w-40 h-40 object-cover mb-2" />
