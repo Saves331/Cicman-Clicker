@@ -5,6 +5,8 @@ import { getItemList, getUpgradeList } from "./Data"
 
 function Count() {
 
+    const INTERVAL = 10
+
     const [count, setCount] = useState(100000000)
     
     const [items, setItems] = useState({
@@ -20,15 +22,15 @@ function Count() {
     })
 
     const [upgrades, setUpragades] = useState({
-      proteinUpgrade: { count: 0, price: 100, RATE: 0.2},
-      employeeUpgrade: { count: 0, price: 1000, RATE: 1},
-      machineUpgrade: { count: 0, price: 10000, RATE: 10},
-      supplementStackUpgrade: {count: 0, price: 120000, RATE: 105},
-      opelUpgrade: {count: 0, price: 450000, RATE: 8400},
-      predajnaUpgrade: { count:0, price: 1000000, RATE: 18950},
-      skladUpgrade: { count: 0, price: 50000000, RATE: 40000},
-      mercedesUpgrade: { count: 0, price: 100000000, RATE: 160000},
-      robotUpgrade: { count:0, price: 200000000, RATE: 820000}
+      proteinUpgrade: { count: 0, price: 100, RATE: 0.002},
+      employeeUpgrade: { count: 0, price: 1000, RATE: 0.01},
+      machineUpgrade: { count: 0, price: 10000, RATE: 0.1},
+      supplementStackUpgrade: {count: 0, price: 120000, RATE: 1.05},
+      opelUpgrade: {count: 0, price: 450000, RATE: 84},
+      predajnaUpgrade: { count:0, price: 1000000, RATE: 189.5},
+      skladUpgrade: { count: 0, price: 50000000, RATE: 400},
+      mercedesUpgrade: { count: 0, price: 100000000, RATE: 1600},
+      robotUpgrade: { count:0, price: 200000000, RATE: 8200}
     })
 
     function showTotalCps() {
@@ -36,7 +38,7 @@ function Count() {
         const itemCount = items[itemName].count
         const upgradeName = itemName+"Upgrade"
         const rate = upgrades[upgradeName]?.RATE || 0 
-        return total + itemCount*rate
+        return total + itemCount*rate*100
       }, 0)
 
       return totalCPS.toFixed(1)
@@ -91,7 +93,7 @@ function Count() {
           return total + itemCount * rate
         }, 0)
          setCount(prev => prev + totalPassive)
-      }, 1000)
+      }, INTERVAL)
      
       return () => clearInterval(intervalID)
     }, [items, upgrades])
