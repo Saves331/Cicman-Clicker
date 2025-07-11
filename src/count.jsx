@@ -7,12 +7,12 @@ function Count() {
 
     const INTERVAL = 10
 
-    const [count, setCount] = useState(100000000)
+    const [count, setCount] = useState(1_000_000_000)
     
     const [items, setItems] = useState({
       protein: { count: 0, price: 10},
       employee: { count: 0, price: 100},
-      machine: { count: 0, price: 1000},
+      machine: { count: 10, price: 1000},
       supplementStack: { count: 0, price: 12000},
       opel: { count: 0, price: 45000},
       predajna: { count: 0, price: 100000},
@@ -44,12 +44,15 @@ function Count() {
       return totalCPS.toFixed(1)
     }
 
-    const displayCount = count.toFixed(1)
     
     
 
     function handleClick() {
         setCount(prev => prev+1)
+    }
+
+    const formatNumber = (num) => {
+       return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(num);
     }
 
     function addItem(itemName) {
@@ -101,7 +104,7 @@ function Count() {
   return (
     <div className="grid grid-cols-9 h-full">
       <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
-        <h1 className="text-4xl text-white font-bold">CicCount: {displayCount}</h1>
+        <h1 className="text-4xl text-white font-bold">CicCount: {formatNumber(count.toFixed(0))}Cic</h1>
         <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {showTotalCps()}</h2>
         <button onClick={handleClick} className="cursor-pointer"><img src={ciciman} alt="" className="h-120"/></button>
       </div>
@@ -112,7 +115,7 @@ function Count() {
     <div key={item.id} className="p-4 bg-blue-600 border-4 m-0">
       <button onClick={() => addItem(item.key)} className="flex flex-col items-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full">
         <h2 className="text-xl font-bold">{item.name}</h2>
-        <p className="mb-2">Price: {item.price}</p>
+        <p className="mb-2">Price: {formatNumber(item.price)}</p>
         <img src={item.img} alt={item.name} className="w-40 h-40 object-cover mb-2" />
         <p>Owned: {item.numberOfItem}</p>
       </button>

@@ -110,37 +110,95 @@ import robotImg from "./images/robot.webp"
 
 
     export const getUpgradeList = (upgrades) => [
-        {
-            id: 1,
-            key: "proteinUpgrade",
-            name: "ProteinUpgrade",
-            displayName: "Protein",
-            price: upgrades.proteinUpgrade.price.toFixed(1),
-            numberOfItem: upgrades.proteinUpgrade.count,
-            img: ProteinUpgradeImg,
-            multiplier: 2
-        },
-
-        {
-            id: 2,
-            key: "employeeUpgrade",
-            name: "EmployeeUpgrade",
-            displayName: "Employee",
-            price: upgrades.employeeUpgrade.price.toFixed(1),
-            numberOfItem: upgrades.employeeUpgrade.count,
-            img: ProteinUpgradeImg,
-            multiplier: 2
-        },
-
-        {
-            id: 3,
-            key: "machineUpgrade",
-            name: "MachineUpgrade",
-            displayName: "Machine",
-            price: upgrades.machineUpgrade.price.toFixed(1),
-            numberOfItem: upgrades.machineUpgrade.count,
-            img: ProteinUpgradeImg,
-            multiplier: 2
-        }
-    ]
+    {
+        id: 1,
+        key: "proteinUpgrade",
+        name: "ProteinUpgrade",
+        displayName: "Protein",
+        price: upgrades.proteinUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.proteinUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 2,
+        key: "employeeUpgrade",
+        name: "EmployeeUpgrade",
+        displayName: "Employee",
+        price: upgrades.employeeUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.employeeUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 3,
+        key: "machineUpgrade",
+        name: "MachineUpgrade",
+        displayName: "Machine",
+        price: upgrades.machineUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.machineUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 4,
+        key: "supplementStackUpgrade",
+        name: "SupplementStackUpgrade",
+        displayName: "Supplement Stack",
+        price: upgrades.supplementStackUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.supplementStackUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 5,
+        key: "opelUpgrade",
+        name: "OpelUpgrade",
+        displayName: "Opel Insignia",
+        price: upgrades.opelUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.opelUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 6,
+        key: "predajnaUpgrade",
+        name: "PredajnaUpgrade",
+        displayName: "Predajna GYMBEAM!!!",
+        price: upgrades.predajnaUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.predajnaUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 7,
+        key: "skladUpgrade",
+        name: "SkladUpgrade",
+        displayName: "Sklad GYMBEAM",
+        price: upgrades.skladUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.skladUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 8,
+        key: "mercedesUpgrade",
+        name: "MercedesUpgrade",
+        displayName: "Maybach Brabus",
+        price: upgrades.mercedesUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.mercedesUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    },
+    {
+        id: 9,
+        key: "robotUpgrade",
+        name: "RobotUpgrade",
+        displayName: "Roboti",
+        price: upgrades.robotUpgrade.price.toFixed(1),
+        numberOfItem: upgrades.robotUpgrade.count,
+        img: ProteinUpgradeImg,
+        multiplier: 2
+    }
+]
 
