@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
 import { getItemList, getUpgradeList } from "./Data"
+import CicBtn from "./features/CicClick"
+
 
 function Count() {
 
@@ -9,10 +11,11 @@ function Count() {
 
     const [count, setCount] = useState(1_000_000_000)
     
+    
     const [items, setItems] = useState({
       protein: { count: 0, price: 10},
       employee: { count: 0, price: 100},
-      machine: { count: 10, price: 1000},
+      machine: { count: 0, price: 1000},
       supplementStack: { count: 0, price: 12000},
       opel: { count: 0, price: 45000},
       predajna: { count: 0, price: 100000},
@@ -33,7 +36,7 @@ function Count() {
       robotUpgrade: { count:0, price: 200000000, RATE: 8200}
     })
 
-    function showTotalCps() {
+    const totalCPS = () => {
       const totalCPS = Object.keys(items).reduce((total, itemName) => {
         const itemCount = items[itemName].count
         const upgradeName = itemName+"Upgrade"
@@ -51,9 +54,17 @@ function Count() {
         setCount(prev => prev+1)
     }
 
-    const formatNumber = (num) => {
-       return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(num);
+
+    function formatNumber(num) {
+    
+       if(num >= 1_000_000) {
+        return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(num/1000) + "milions ";
+      } else {
+        return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(num);
+      }
     }
+
+    
 
     function addItem(itemName) {
      const item = items[itemName]
@@ -105,8 +116,10 @@ function Count() {
     <div className="grid grid-cols-9 h-full">
       <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
         <h1 className="text-4xl text-white font-bold">CicCount: {formatNumber(count.toFixed(0))}Cic</h1>
-        <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {showTotalCps()}</h2>
-        <button onClick={handleClick} className="cursor-pointer"><img src={ciciman} alt="" className="h-120"/></button>
+        <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {formatNumber(totalCPS())}</h2>
+        <CicBtn 
+        ciciman = {ciciman}
+        handleClick = {handleClick}></CicBtn>
       </div>
 
 
@@ -129,7 +142,7 @@ function Count() {
         <div key={upgrade.id} className='bg-amber-100 border-2'>
              <button onClick={() => handleUpgrade(upgrade.key)} className='flex items-center cursor-pointer'>
                 <img src={upgrade.img} alt={upgrade.name} className='w-15'/>
-                <h2 className='text-center'>Buy Upgrade 2x for {upgrade.displayName} ({upgrade.price}Cic)</h2>
+                <h2 className='text-center'>Buy Upgrade 2x for {upgrade.displayName} ({formatNumber(upgrade.price)}Cic)</h2>
              </button>
         </div>
        ))}
