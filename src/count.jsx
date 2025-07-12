@@ -137,19 +137,34 @@ function Count() {
 </div>
       
 
-      <div>
-       {getUpgradeList(upgrades).map((upgrade) => (
-        <div key={upgrade.id} className='bg-amber-100 border-2'>
-             <button onClick={() => handleUpgrade(upgrade.key)} className='flex items-center cursor-pointer'>
-                <img src={upgrade.img} alt={upgrade.name} className='w-15'/>
-                <h2 className='text-center'>Buy Upgrade 2x for {upgrade.displayName} ({formatNumber(upgrade.price)}Cic)</h2>
-             </button>
+<div>
+  {getUpgradeList(upgrades).map((upgrade) => (
+    <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
+      <button
+        onClick={() => handleUpgrade(upgrade.key)}
+        className="flex items-center cursor-pointer w-full"
+      >
+        <div className="w-15 h-15 flex-shrink-0">
+          <img
+            src={upgrade.img}
+            alt={upgrade.name}
+            className="w-full h-full object-cover rounded"
+          />
         </div>
-       ))}
-      </div>
-        
 
-        
+        <div className="ml-4 flex-1">
+          <h2 className="text-center text-base font-semibold">
+            2x for {upgrade.displayName} 
+          </h2>
+
+          <h2 className="text-center text-base font-semibold">
+            ({formatNumber(upgrade.price)} Cic)
+          </h2>
+        </div>
+      </button>
+    </div>
+  ))}
+</div>
     </div>
   )
 }

@@ -67,7 +67,7 @@ import robotImg from "./images/robot.webp"
          {
             id: 6,
             key: "predajna",
-            name: "Predajna GYMBEAM!!!",
+            name: "Predajna GYMBEAM",
             price: items.predajna.price.toFixed(1),
             numberOfItem: items.predajna.count,
             img: predajnaImg,
@@ -79,7 +79,7 @@ import robotImg from "./images/robot.webp"
          {
             id: 7,
             key: "sklad",
-            name: "Sklad GYMBEAM",
+            name: "Sklad GYMBEAM!!!",
             price: items.sklad.price.toFixed(1),
             numberOfItem: items.sklad.count,
             img: skladImg,
@@ -127,7 +127,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Employee",
         price: upgrades.employeeUpgrade.price.toFixed(1),
         numberOfItem: upgrades.employeeUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: EmployeeImg,
         multiplier: 2
     },
     {
@@ -137,7 +137,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Machine",
         price: upgrades.machineUpgrade.price.toFixed(1),
         numberOfItem: upgrades.machineUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: MachineImg,
         multiplier: 2
     },
     {
@@ -147,7 +147,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Supplement Stack",
         price: upgrades.supplementStackUpgrade.price.toFixed(1),
         numberOfItem: upgrades.supplementStackUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: supplementStackImg,
         multiplier: 2
     },
     {
@@ -157,17 +157,17 @@ import robotImg from "./images/robot.webp"
         displayName: "Opel Insignia",
         price: upgrades.opelUpgrade.price.toFixed(1),
         numberOfItem: upgrades.opelUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: opelImg,
         multiplier: 2
     },
     {
         id: 6,
         key: "predajnaUpgrade",
         name: "PredajnaUpgrade",
-        displayName: "Predajna GYMBEAM!!!",
+        displayName: "Predajna GYMBEAM",
         price: upgrades.predajnaUpgrade.price.toFixed(1),
         numberOfItem: upgrades.predajnaUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: predajnaImg,
         multiplier: 2
     },
     {
@@ -177,7 +177,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Sklad GYMBEAM",
         price: upgrades.skladUpgrade.price.toFixed(1),
         numberOfItem: upgrades.skladUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: skladImg,
         multiplier: 2
     },
     {
@@ -187,7 +187,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Maybach Brabus",
         price: upgrades.mercedesUpgrade.price.toFixed(1),
         numberOfItem: upgrades.mercedesUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: mercedesImg,
         multiplier: 2
     },
     {
@@ -197,7 +197,7 @@ import robotImg from "./images/robot.webp"
         displayName: "Roboti",
         price: upgrades.robotUpgrade.price.toFixed(1),
         numberOfItem: upgrades.robotUpgrade.count,
-        img: ProteinUpgradeImg,
+        img: robotImg,
         multiplier: 2
     }
 ]
