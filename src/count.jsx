@@ -9,7 +9,7 @@ function Count() {
 
     const INTERVAL = 10
 
-    const [count, setCount] = useState(1_000_000_000)
+    const [count, setCount] = useState(1_000)
     
     
     const [items, setItems] = useState({
@@ -55,12 +55,18 @@ function Count() {
     }
 
 
-    function formatNumber(num) {
-    
+    function formatNumber(num, isUpgrade = false, decimals = 0) {
        if(num >= 1_000_000) {
-        return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(num/1000) + "milions ";
-      } else {
-        return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(num);
+        if (isUpgrade && num >= 1_000_000) {
+        return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(num/1000) + "m";
+      }
+      else {
+         return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(num/1000) + "milions ";
+      }
+
+      }
+      else {
+        return new Intl.NumberFormat('en-US', { maximumFractionDigits: decimals }).format(num);
       }
     }
 
@@ -113,59 +119,69 @@ function Count() {
     }, [items, upgrades])
 
   return (
-    <div className="grid grid-cols-9 h-full">
-      <div className="flex items-center justify-center flex-col bg-linear-to-br from-amber-400 to-orange-600 col-span-4">
-        <h1 className="text-4xl text-white font-bold">CicCount: {formatNumber(count.toFixed(0))}Cic</h1>
-        <h2 className="mb-6 text-white text-2xl font-medium">Cicman per sec: {formatNumber(totalCPS())}</h2>
-        <CicBtn 
-        ciciman = {ciciman}
-        handleClick = {handleClick}></CicBtn>
-      </div>
+    <div className="grid grid-cols-[minmax(380px,auto)_1fr_minmax(300px,auto)] h-screen">
+  {/* Left Column */}
+  <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600">
+    <h1 className="text-4xl text-white font-bold">
+      CicCount: {formatNumber(count.toFixed(0))}Cic
+    </h1>
+    <h2 className="mb-6 text-white text-2xl font-medium">
+      Cicman per sec: {formatNumber(totalCPS(), false, 1)}
+    </h2>
+    <CicBtn ciciman={ciciman} handleClick={handleClick}></CicBtn>
+  </div>
 
-
-      <div className="col-span-4 grid grid-cols-3 grid-rows-3">
-      {getItemList(items).map((item) => (
-    <div key={item.id} className="p-4 bg-blue-600 border-4 m-0">
-      <button onClick={() => addItem(item.key)} className="flex flex-col items-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full">
-        <h2 className="text-xl font-bold">{item.name}</h2>
-        <p className="mb-2">Price: {formatNumber(item.price)}</p>
-        <img src={item.img} alt={item.name} className="w-40 h-40 object-cover mb-2" />
-        <p>Owned: {item.numberOfItem}</p>
-      </button>
-    </div>
-  ))}
-</div>
-      
-
-<div>
-  {getUpgradeList(upgrades).map((upgrade) => (
-    <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
-      <button
-        onClick={() => handleUpgrade(upgrade.key)}
-        className="flex items-center cursor-pointer w-full"
-      >
-        <div className="w-15 h-15 flex-shrink-0">
+  {/* Middle Column */}
+  <div className="overflow-y-auto h-screen grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
+    {getItemList(items).map((item) => (
+      <div key={item.id} className="p-4 bg-blue-600 border-4 flex items-center justify-items-center">
+        <button
+          onClick={() => addItem(item.key)}
+          className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full"
+        >
+          <h2 className="text-xl font-bold">{item.name}</h2>
+          <p className="mb-2">Price: {formatNumber(item.price)}</p>
           <img
-            src={upgrade.img}
-            alt={upgrade.name}
-            className="w-full h-full object-cover rounded"
+            src={item.img}
+            alt={item.name}
+            className="w-full max-w-[160px] aspect-square object-cover mb-2"
           />
-        </div>
+          <p>Owned: {item.numberOfItem}</p>
+        </button>
+      </div>
+    ))}
+  </div>
 
-        <div className="ml-4 flex-1">
-          <h2 className="text-center text-base font-semibold">
-            2x for {upgrade.displayName} 
-          </h2>
-
-          <h2 className="text-center text-base font-semibold">
-            ({formatNumber(upgrade.price)} Cic)
-          </h2>
-        </div>
-      </button>
-    </div>
-  ))}
+  {/* Right Column */}
+  <div className="h-screen space-y-1 overflow-y-auto flex-shrink-0">
+    {getUpgradeList(upgrades).map((upgrade) => (
+      <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
+        <button
+          onClick={() => handleUpgrade(upgrade.key)}
+          className="flex items-center cursor-pointer w-full"
+        >
+          <div className="w-15 h-15 flex-shrink-0">
+            <img
+              src={upgrade.img}
+              alt={upgrade.name}
+              className="w-full h-full object-cover rounded"
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-center text-base font-semibold hidden md:block">
+              2x <span className="hidden lg:inline">for {upgrade.displayName}</span>
+            </h2>
+            <h2 className="text-center text-base font-semibold">
+              ({formatNumber(upgrade.price, true)} Cic)
+            </h2>
+          </div>
+        </button>
+      </div>
+    ))}
+  </div>
 </div>
-    </div>
+
+
   )
 }
 export default Count
