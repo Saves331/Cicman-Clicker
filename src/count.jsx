@@ -118,68 +118,74 @@ function Count() {
       return () => clearInterval(intervalID)
     }, [items, upgrades])
 
-  return (
-    <div className="grid grid-cols-[minmax(380px,auto)_1fr_minmax(300px,auto)] h-screen">
-  {/* Left Column */}
-  <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600">
-    <h1 className="text-4xl text-white font-bold">
-      CicCount: {formatNumber(count.toFixed(0))}Cic
-    </h1>
-    <h2 className="mb-6 text-white text-2xl font-medium">
-      Cicman per sec: {formatNumber(totalCPS(), false, 1)}
-    </h2>
-    <CicBtn ciciman={ciciman} handleClick={handleClick}></CicBtn>
-  </div>
+return (
+    <div class="grid grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(75px,1fr)] lg:grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(250px,1fr)] h-screen max-w-auto mx-auto">
 
-  {/* Middle Column */}
-  <div className="overflow-y-auto h-screen grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
-    {getItemList(items).map((item) => (
-      <div key={item.id} className="p-4 bg-blue-600 border-4 flex items-center justify-items-center">
-        <button
-          onClick={() => addItem(item.key)}
-          className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full"
-        >
-          <h2 className="text-xl font-bold">{item.name}</h2>
-          <p className="mb-2">Price: {formatNumber(item.price)}</p>
-          <img
-            src={item.img}
-            alt={item.name}
-            className="w-full max-w-[160px] aspect-square object-cover mb-2"
-          />
-          <p>Owned: {item.numberOfItem}</p>
-        </button>
+      {/* Left Column */}
+      <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600">
+        <h1 className="text-4xl text-white font-bold">
+          CicCount: {formatNumber(count, false, 0)}Cic
+        </h1>
+        <h2 className="mb-6 text-white text-2xl font-medium">
+          Cicman per sec: {formatNumber(parseFloat(totalCPS()), false, 1)}
+        </h2>
+        <CicBtn ciciman={ciciman} handleClick={handleClick}></CicBtn>
       </div>
-    ))}
-  </div>
 
-  {/* Right Column */}
-  <div className="h-screen space-y-1 overflow-y-auto flex-shrink-0">
-    {getUpgradeList(upgrades).map((upgrade) => (
-      <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
-        <button
-          onClick={() => handleUpgrade(upgrade.key)}
-          className="flex items-center cursor-pointer w-full"
-        >
-          <div className="w-15 h-15 flex-shrink-0">
-            <img
-              src={upgrade.img}
-              alt={upgrade.name}
-              className="w-full h-full object-cover rounded"
-            />
+      {/* Middle Column */}
+      <div className="overflow-y-auto h-screen grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 p-4">
+        {getItemList(items).map((item) => (
+          <div key={item.id} className="p-4 bg-blue-600 border-4 flex items-center justify-items-center">
+            <button
+              onClick={() => addItem(item.key)}
+              className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full"
+            >
+              <h2 className="text-xl font-bold">{item.name}</h2>
+              <p className="mb-2">Price: {formatNumber(item.price)}</p>
+              <img
+                src={item.img}
+                alt={item.name}
+                className="w-full max-w-[160px] aspect-square object-cover mb-2"
+              />
+              <p>Owned: {item.numberOfItem}</p>
+            </button>
           </div>
-          <div className="flex-1">
-            <h2 className="text-center text-base font-semibold hidden md:block">
-              2x <span className="hidden lg:inline">for {upgrade.displayName}</span>
-            </h2>
-            <h2 className="text-center text-base font-semibold">
-              ({formatNumber(upgrade.price, true)} Cic)
-            </h2>
-          </div>
-        </button>
+        ))}
       </div>
-    ))}
-  </div>
+
+      {/* Right Column */}
+      <div className="h-screen space-y-1 overflow-y-auto flex-shrink-0">
+        {getUpgradeList(upgrades).map((upgrade) => (
+         <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
+  <button
+    onClick={() => handleUpgrade(upgrade.key)}
+    className="w-full cursor-pointer 
+               flex lg:items-center 
+               p-0"
+  >
+    {/* Image: full on small screens, small on lg+ */}
+    <div className="w-full max-w-[160px] aspect-square object-cover lg:w-15 lg:h-15 flex-shrink-0">
+      <img
+        src={upgrade.img}
+        alt={upgrade.name}
+        className="w-full h-full object-cover rounded"
+      />
+    </div>
+
+    {/* Text: hidden < lg */}
+    <div className="flex-1 hidden lg:block">
+      <h2 className="text-center text-base font-semibold">
+        <span>2x for {upgrade.displayName}</span>
+      </h2>
+      <h2 className="text-center text-base font-semibold">
+        <span>({formatNumber(upgrade.price, true)} Cic)</span>
+      </h2>
+    </div>
+  </button>
 </div>
+        ))}
+      </div>
+    </div>
 
 
   )
