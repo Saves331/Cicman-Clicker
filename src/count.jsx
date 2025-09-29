@@ -28,12 +28,12 @@ function Count() {
       proteinUpgrade: { count: 0, price: 100, RATE: 0.002},
       employeeUpgrade: { count: 0, price: 1000, RATE: 0.01},
       machineUpgrade: { count: 0, price: 10000, RATE: 0.1},
-      supplementStackUpgrade: {count: 0, price: 120000, RATE: 1.05},
-      opelUpgrade: {count: 0, price: 450000, RATE: 84},
-      predajnaUpgrade: { count:0, price: 1000000, RATE: 189.5},
-      skladUpgrade: { count: 0, price: 50000000, RATE: 400},
-      mercedesUpgrade: { count: 0, price: 100000000, RATE: 1600},
-      robotUpgrade: { count:0, price: 200000000, RATE: 8200}
+      supplementStackUpgrade: {count: 0, price: 120000, RATE: 1.10},
+      opelUpgrade: {count: 0, price: 450000, RATE: 8.4},
+      predajnaUpgrade: { count:0, price: 1000000, RATE: 18.95},
+      skladUpgrade: { count: 0, price: 50000000, RATE: 40},
+      mercedesUpgrade: { count: 0, price: 100000000, RATE: 160},
+      robotUpgrade: { count:0, price: 200000000, RATE: 820}
     })
 
     const totalCPS = () => {

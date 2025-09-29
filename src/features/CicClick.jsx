@@ -18,14 +18,14 @@ function CicClick(props) {
     <button onMouseDown={handleMouseDown}
             onMouseUp = {handleMouseUp}
             onClick={handleClick}
-            className={`
+            className={` cursor-pointer
          text-white rounded-full
         transition-transform duration-300 ease-in-out active:scale-95
         ${clicked ? "scale-105" : ""}
       `}
             
             >
-        <img src={ciciman} className="h-100 rounded-full"/>
+        <img src={ciciman} className="h-100 rounded-full "/>
     </button>
 
     
