@@ -8,3 +8,7 @@ body, #root {
 .locked {
     @apply px-5
 }
+
+img {
+    -webkit-user-drag: none;
+}

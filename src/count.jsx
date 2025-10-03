@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 import ciciman from './images/cicmania.jpg'
 import ProteinUpgrade from "./Upgrades/ProteinUpgrade"
 import { getItemList, getUpgradeList } from "./Data"
@@ -9,38 +9,71 @@ function Count() {
 
     const INTERVAL = 10
 
-    const [count, setCount] = useState(1_000)
     
+   const defaultGame = {
+  count: 1_000,
+  items: {
+    protein: { count: 0, price: 10 },
+    employee: { count: 0, price: 100 },
+    machine: { count: 0, price: 1000 },
+    supplementStack: { count: 0, price: 12000 },
+    opel: { count: 0, price: 45000 },
+    predajna: { count: 0, price: 100000 },
+    sklad: { count: 0, price: 5000000 },
+    mercedes: { count: 0, price: 34000000 },
+    robot: { count: 0, price: 100000000 },
+  },
+  upgrades: {
+    proteinUpgrade: { count: 0, price: 100, RATE: 0.002 },
+    employeeUpgrade: { count: 0, price: 1000, RATE: 0.01 },
+    machineUpgrade: { count: 0, price: 10000, RATE: 0.1 },
+    supplementStackUpgrade: { count: 0, price: 120000, RATE: 1.1 },
+    opelUpgrade: { count: 0, price: 450000, RATE: 8.4 },
+    predajnaUpgrade: { count: 0, price: 1000000, RATE: 18.95 },
+    skladUpgrade: { count: 0, price: 50000000, RATE: 40 },
+    mercedesUpgrade: { count: 0, price: 100000000, RATE: 160 },
+    robotUpgrade: { count: 0, price: 200000000, RATE: 820 },
+  },
+};
+
+
+
+
+    const [game, setGame] = useState(() => {
+      const savedGame = localStorage.getItem("cic-save") //GetItem
+      return savedGame ? JSON.parse(savedGame) : defaultGame
     
-    const [items, setItems] = useState({
-      protein: { count: 0, price: 10},
-      employee: { count: 0, price: 100},
-      machine: { count: 0, price: 1000},
-      supplementStack: { count: 0, price: 12000},
-      opel: { count: 0, price: 45000},
-      predajna: { count: 0, price: 100000},
-      sklad: {count: 0, price: 5000000},
-      mercedes: { count: 0, price: 34000000},
-      robot: { count: 0, price: 100000000}
     })
 
-    const [upgrades, setUpragades] = useState({
-      proteinUpgrade: { count: 0, price: 100, RATE: 0.002},
-      employeeUpgrade: { count: 0, price: 1000, RATE: 0.01},
-      machineUpgrade: { count: 0, price: 10000, RATE: 0.1},
-      supplementStackUpgrade: {count: 0, price: 120000, RATE: 1.10},
-      opelUpgrade: {count: 0, price: 450000, RATE: 8.4},
-      predajnaUpgrade: { count:0, price: 1000000, RATE: 18.95},
-      skladUpgrade: { count: 0, price: 50000000, RATE: 40},
-      mercedesUpgrade: { count: 0, price: 100000000, RATE: 160},
-      robotUpgrade: { count:0, price: 200000000, RATE: 820}
-    })
+
+     useEffect(() =>{
+      
+      localStorage.setItem("cic-save", JSON.stringify(game))
+    }, [game])
+
+
+
+    useEffect(() => {
+      const intervalID = setInterval(() => {
+        const totalPassive = Object.keys(game.items).reduce((total, itemName) => {
+          const itemCount = game.items[itemName].count
+          const upgradeName = itemName + "Upgrade"
+          const rate = game.upgrades[upgradeName]?.RATE || 0;
+          return total + itemCount * rate
+        }, 0)
+        setGame(prev => ({...prev, count: prev.count + totalPassive}))
+        
+      }, INTERVAL)
+     
+      return () => clearInterval(intervalID)
+    }, [game.items, game.upgrades])
+
 
     const totalCPS = () => {
-      const totalCPS = Object.keys(items).reduce((total, itemName) => {
-        const itemCount = items[itemName].count
+      const totalCPS = Object.keys(game.items).reduce((total, itemName) => {
+        const itemCount = game.items[itemName].count
         const upgradeName = itemName+"Upgrade"
-        const rate = upgrades[upgradeName]?.RATE || 0 
+        const rate = game.upgrades[upgradeName]?.RATE || 0 
         return total + itemCount*rate*100
       }, 0)
 
@@ -51,7 +84,7 @@ function Count() {
     
 
     function handleClick() {
-        setCount(prev => prev+1)
+        setGame(prev =>({...prev, count: prev.count+1}))
     }
 
 
@@ -73,50 +106,48 @@ function Count() {
     
 
     function addItem(itemName) {
-     const item = items[itemName]
-      if(count >= item.price) {
-        setCount(prev => prev - item.price);
-        setItems(prevItems => ({...prevItems,
-          [itemName]: {
-            count: prevItems[itemName].count + 1,
-            price: prevItems[itemName].price *1.15
-          }
-        }))
+     const item = game.items[itemName]
+      if(game.count >= item.price) {
+        setGame(prev => ({...prev, count: prev.count - item.price,
+                items: {
+                  ...prev.items, 
+                [itemName]: {
+                  count: prev.items[itemName].count +1,
+                  price: prev.items[itemName].price * 1.15
+                }
+                }
+        }));
+       
       }
       
     }
 
      function handleUpgrade(upgradeName) {
-      const upgrade = upgrades[upgradeName]
-      if(count >= upgrade.price){
-        setCount(prev => prev-upgrade.price)
-        setUpragades(prevUpgrades => ({...prevUpgrades, 
-          [upgradeName]: {
-            count: prevUpgrades[upgradeName].count + 1,
-            price: prevUpgrades[upgradeName].price * 5,
-            RATE: prevUpgrades[upgradeName].RATE * 2
+      const upgrade = game.upgrades[upgradeName]
+      if(game.count >= upgrade.price){
+        setGame(prev => ({...prev, count: prev.count - upgrade.price,
+          upgrades: {
+            ...prev.upgrades,
+            [upgradeName]: {
+              count: prev.upgrades[upgradeName].count +1,
+              price: prev.upgrades[upgradeName].price * 5,
+              RATE: prev.upgrades[upgradeName].RATE *2
+            } 
           }
         }))
-
+        
       }
 
    }
 
-    useEffect(() => {
-      
 
-      const intervalID = setInterval(() => {
-        const totalPassive = Object.keys(items).reduce((total, itemName) => {
-          const itemCount = items[itemName].count
-          const upgradeName = itemName + "Upgrade"
-          const rate = upgrades[upgradeName]?.RATE || 0;
-          return total + itemCount * rate
-        }, 0)
-         setCount(prev => prev + totalPassive)
-      }, INTERVAL)
-     
-      return () => clearInterval(intervalID)
-    }, [items, upgrades])
+   function resetGame() {
+    if (window.confirm("Are you sure you want to reset the game?")) {
+      setGame(defaultGame);
+      localStorage.setItem("cic-save", JSON.stringify(defaultGame));
+    }
+   }
+                           
 
 return (
     <div class="grid grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(75px,1fr)] lg:grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(250px,1fr)] h-screen max-w-auto mx-auto">
@@ -124,7 +155,7 @@ return (
       {/* Left Column */}
       <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600">
         <h1 className="text-4xl text-white font-bold">
-          CicCount: {formatNumber(count, false, 0)}Cic
+          CicCount: {formatNumber(game.count, false, 0)}Cic
         </h1>
         <h2 className="mb-6 text-white text-2xl font-medium">
           Cicman per sec: {formatNumber(parseFloat(totalCPS()), false, 1)}
@@ -134,7 +165,7 @@ return (
 
       {/* Middle Column */}
       <div className="overflow-y-auto h-screen grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 p-4">
-        {getItemList(items).map((item) => (
+        {getItemList(game.items).map((item) => (
           <div key={item.id} className="p-4 bg-blue-600 border-4 flex items-center justify-items-center">
             <button
               onClick={() => addItem(item.key)}
@@ -155,7 +186,7 @@ return (
 
       {/* Right Column */}
       <div className="h-screen space-y-1 overflow-y-auto flex-shrink-0">
-        {getUpgradeList(upgrades).map((upgrade) => (
+        {getUpgradeList(game.upgrades).map((upgrade) => (
          <div key={upgrade.id} className="bg-amber-100 border-2 rounded">
   <button
     onClick={() => handleUpgrade(upgrade.key)}
@@ -185,6 +216,10 @@ return (
 </div>
         ))}
       </div>
+
+
+        <button onClick={resetGame} className="absolute top-10 left-10 bg-gray-600 rounded text-white p-5 font-bold text-2xl cursor-pointer">Reset game</button>
+
     </div>
 
 
