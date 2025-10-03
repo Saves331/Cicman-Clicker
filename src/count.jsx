@@ -153,7 +153,7 @@ return (
     <div class="grid grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(75px,1fr)] lg:grid-cols-[minmax(380px,3fr)_minmax(300px,6fr)_minmax(250px,1fr)] h-screen max-w-auto mx-auto">
 
       {/* Left Column */}
-      <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600">
+      <div className="flex h-screen items-center justify-center flex-col bg-gradient-to-br from-amber-400 to-orange-600 text-center">
         <h1 className="text-4xl text-white font-bold">
           CicCount: {formatNumber(game.count, false, 0)}Cic
         </h1>
@@ -164,21 +164,25 @@ return (
       </div>
 
       {/* Middle Column */}
-      <div className="overflow-y-auto h-screen grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 p-4">
+      <div className="overflow-y-auto h-screen grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 p-4 bg-gray-800">
         {getItemList(game.items).map((item) => (
-          <div key={item.id} className="p-4 bg-blue-600 border-4 flex items-center justify-items-center">
+          <div key={item.id} className="p-4 bg-[#1993c4] border-4 flex items-center justify-items-center">
             <button
               onClick={() => addItem(item.key)}
-              className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full"
+              className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md hover:bg-gray-100 transition w-full h-full cursor-pointer"
             >
-              <h2 className="text-xl font-bold">{item.name}</h2>
-              <p className="mb-2">Price: {formatNumber(item.price)}</p>
+              <h2 className="text-4xl p-4 font-bold">{item.name}</h2>
+              
               <img
                 src={item.img}
                 alt={item.name}
-                className="w-full max-w-[160px] aspect-square object-cover mb-2"
+                className="w-full max-w-[160px] aspect-square object-cover mb-2 rounded-full border-2 border-amber-200"
               />
-              <p>Owned: {item.numberOfItem}</p>
+              <div className="flex gap-5 p-3">
+               <p className="mb-2">Price: {formatNumber(item.price)}</p>
+               <p>Owned: {item.numberOfItem}</p>
+              </div>
+              
             </button>
           </div>
         ))}

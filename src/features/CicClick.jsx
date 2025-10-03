@@ -21,7 +21,7 @@ function CicClick(props) {
 
       setTimeout(() => {
         setPlusOne((prev) => prev.filter((p) => p.id !== id))
-      }, 1000)
+      }, 2000)
     }
 
 
@@ -80,7 +80,7 @@ function CicClick(props) {
           }
         }
         .animate-fade-up {
-          animation: fade-up 1s ease-out forwards;
+          animation: fade-up 1.5s ease-out forwards;
         }
       `}</style>
     </div>
